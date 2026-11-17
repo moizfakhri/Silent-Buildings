@@ -1,0 +1,36 @@
+# data never goes in git
+data/raw/
+data/interim/
+data/processed/
+*.parquet
+*.duckdb
+*.csv
+*.pmtiles
+!data/sample/**
+!reports/**/*.csv
+# map: large generated data stays out of git (the tiles are covered by *.pmtiles); the small sample and districts.json can be committed
+app/web/data/facts/
+# secrets and env
+.env
+.env.*
+!.env.example
+# python / notebooks
+.venv/
+__pycache__/
+*.egg-info/
+.ipynb_checkpoints/
+*.pyc
+# os / editor
+.DS_Store
+.idea/
+.vscode/
+node_modules/
+
+# tool caches
+.pytest_cache/
+.ruff_cache/
+
+# earlier exploration, not part of the project (excluded at the owner's request)
+rats_vs_trash_bins/
+street-redesign-safety/
+NYC_OpenData_Dataset_Ranking.md

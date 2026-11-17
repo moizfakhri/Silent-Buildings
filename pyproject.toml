@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nycdistress"
+version = "0.0.1"
+description = "Silent distress in NYC buildings: modeling what the complaint system cannot hear"
+requires-python = ">=3.11"
+dependencies = [
+  "duckdb",
+  "polars",
+  "pandas",
+  "pyarrow",
+  "requests",
+  "jupyterlab",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# Correctness rules only; ruff's newer default set is style-heavy.
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E401"]  # `import a, b` on one line is used on purpose in pipelines/
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "pathspec", "nbconvert", "ipykernel"]
+model = ["lightgbm", "scikit-learn", "shap", "matplotlib", "statsmodels", "scipy"]
+map = ["shapely"]
+llm = ["anthropic"]  # only for the live evaluation; everything else runs offline
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
