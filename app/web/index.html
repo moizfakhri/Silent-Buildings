@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Complaint gap map</title>
+<meta name="description" content="Research map of model estimates for Bronx and Brooklyn residential buildings: predicted risk, predicted condition and the gap between predicted condition and complaints.">
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="map" aria-label="3D map of Bronx and Brooklyn residential buildings"></div>
+
+<aside id="controls" aria-label="Map controls">
+  <header>
+    <h1>Complaint gap map</h1>
+    <p class="sub">Bronx and Brooklyn, residential buildings with 3+ units. Model estimates for research.</p>
+  </header>
+  <p id="sample-note" class="banner" hidden></p>
+
+  <section>
+    <label for="layer">Colour buildings by</label>
+    <div class="row">
+      <select id="layer"></select>
+      <button id="help-btn" class="icon" aria-label="What does this layer mean?" aria-expanded="false" aria-controls="help">i</button>
+    </div>
+    <div id="help" class="help" hidden></div>
+    <div id="legend" aria-live="polite"></div>
+  </section>
+
+  <section>
+    <label for="slider">Snapshot: <strong id="snap-label"></strong></label>
+    <div class="row">
+      <button id="play" class="icon" aria-label="Play through snapshots">&#9654;</button>
+      <input id="slider" type="range" min="0" max="15" step="1" value="15" aria-label="Snapshot date">
+    </div>
+    <p class="note">Each snapshot uses only information known on that date; predictions come from models trained on earlier data (out of time).</p>
+  </section>
+
+  <section>
+    <label for="borough">Filters</label>
+    <div class="row">
+      <select id="borough" aria-label="Borough"><option value="">Both boroughs</option><option value="BK">Brooklyn</option><option value="BX">Bronx</option></select>
+      <select id="district" aria-label="Community district"><option value="">All districts</option></select>
+    </div>
+    <label class="check"><input type="checkbox" id="only-gap"> Only the top 10% of the complaint gap in each borough</label>
+    <label class="check"><input type="checkbox" id="only-access"> Only access-blocked buildings</label>
+  </section>
+
+  <section class="row buttons">
+    <button id="theme">Dark mode</button>
+    <button id="tilt">Reset view</button>
+    <button id="about">About &amp; limits</button>
+  </section>
+</aside>
+
+<aside id="panel" hidden aria-label="Building details">
+  <button id="panel-close" class="icon" aria-label="Close">&times;</button>
+  <div id="panel-body"></div>
+</aside>
+
+<div id="hover" hidden></div>
+<footer id="foot">Model estimates for research. Not findings about any owner or tenant. Per-building numbers are public record counts and model outputs; no owner names are used.
+  <a href="#" id="foot-about">Details</a></footer>
+
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+  <div class="card">
+    <h2 id="modal-title">Read this first</h2>
+    <p><strong>This map shows model estimates for research, not findings about any owner or tenant.</strong>
+       Colours are predictions made from public data, and they are wrong for many individual buildings.</p>
+    <ul>
+      <li><strong>Predicted risk</strong>: how likely the building is to see a vacate order, emergency repair charge, AEP selection or HPD litigation in the next 12 months.</li>
+      <li><strong>Predicted condition</strong>: the same idea using only age, size and earlier city actions, with <em>no</em> complaint information.</li>
+      <li><strong>Complaint gap</strong>: predicted condition compared with the building's complaint record. A large gap does <em>not</em> mean a building is hiding danger. In the validation behind this map, buildings that are quieter than predicted had slightly <em>fewer</em> later enforcement events than predicted, not more.</li>
+      <li><strong>No-access share</strong>: how many closed complaints ended with the inspector unable to gain access. It is real and sizeable, but buildings with a high share did not show extra later risk.</li>
+    </ul>
+    <p>Most buildings (about 77%) have no HPD complaint in a year, so silence is ordinary. Do not use this map to judge a building, a landlord or a neighbourhood. Method and limits:
+       <code>docs/silent_distress_phase4.md</code> and <code>docs/modeling_phase3.md</code>.</p>
+    <button id="modal-ok">I understand</button>
+  </div>
+</div>
+
+<script src="vendor/maplibre-gl.js"></script>
+<script src="vendor/pmtiles.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
