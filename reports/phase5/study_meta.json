@@ -1,0 +1,8 @@
+{
+ "n_boot": 400,
+ "seed": 20261114,
+ "quarters": 35,
+ "pre": 8,
+ "post": 8,
+ "runtime_min": 0.7
+}

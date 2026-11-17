@@ -1,0 +1,81 @@
+{
+ "n_files": 183,
+ "total_mb": 10.03,
+ "largest": [
+  [
+   1.3,
+   "app/web/data/sample/facts.json"
+  ],
+  [
+   0.99,
+   "app/web/data/sample/buildings.geojson"
+  ],
+  [
+   0.97,
+   "reports/phase3/metrics_test_ci.csv"
+  ],
+  [
+   0.86,
+   "docs/img/map_slider.gif"
+  ],
+  [
+   0.8,
+   "app/web/vendor/maplibre-gl.js"
+  ],
+  [
+   0.43,
+   "reports/phase3/metrics_by_fold.csv"
+  ],
+  [
+   0.43,
+   "notebooks/03_model_results.ipynb"
+  ],
+  [
+   0.42,
+   "notebooks/05_sale_study.ipynb"
+  ],
+  [
+   0.28,
+   "notebooks/06_map_tour.ipynb"
+  ],
+  [
+   0.22,
+   "notebooks/04_silent_distress.ipynb"
+  ],
+  [
+   0.21,
+   "app/web/data/districts.json"
+  ],
+  [
+   0.19,
+   "reports/phase5/figures/event_study_silent_vs_not.png"
+  ]
+ ],
+ "over_5mb": [],
+ "data_files_tracked": [],
+ "secrets": [],
+ "personal_details": [],
+ "bbl_like_tokens": {
+  "app/web/data/sample/buildings.geojson": 1191,
+  "app/web/data/sample/facts.json": 1066,
+  "app/web/vendor/maplibre-gl.js": 33,
+  "app/web/vendor/pmtiles.js": 3,
+  "docs/DATASETS.md": 1,
+  "docs/PROJECT_PLAN.md": 1,
+  "docs/labels_and_features.md": 1,
+  "pipelines/audit.py": 4,
+  "pipelines/build_marts.py": 1,
+  "pipelines/llm_text_features_experiment.py": 1,
+  "pipelines/sql/10_staging.sql": 3,
+  "reports/phase3/metrics_by_fold.csv": 12,
+  "src/nycdistress/llm/biography.py": 1,
+  "tests/fixture_data.py": 2,
+  "tests/test_features.py": 2,
+  "tests/test_keys.py": 2,
+  "tests/test_map.py": 4,
+  "tests/test_sales.py": 20
+ },
+ "name_like_csv_columns": [],
+ "unrelated_root_folders": [],
+ "ignore_gaps": []
+}

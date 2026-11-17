@@ -1,0 +1,12 @@
+step,count
+"DOF sale rows, Bronx and Brooklyn, 2016-2025",301701
+with a positive price,197180
+"price at least $100,000",186651
+"matched to an analysis building (3+ residential units), sold 2018-2025, ANY transaction type (includes condo units and co-op apartments)",117233
+"  of these whole-building sales (three-family, rental walk-up or elevator, 4-10 unit rentals; no apartment number)",37601
+  of these with a positive price,19149
+"price at least $100,000 and $25,000 per residential unit (arms-length proxy)",17553
+distinct lots with at least one such sale,15766
+"first sale with a full window (8 quarters before, 8 after) and no other sale inside it",8480
+"relaxed window (4 before, 4 after), first sales only",13023
+analysis buildings with no priced sale in 2016-2025 (candidate never-treated controls),72502

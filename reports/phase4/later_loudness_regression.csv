@@ -1,0 +1,4 @@
+sample,rows,term,irr,irr_lo,irr_hi,nb_alpha
+all buildings in the test slice,405768,"predicted condition (p_hat), per +1 SD of logit",1.627096763751122,1.5812142280796677,1.6743106857978423,0.7286696146162311
+all buildings in the test slice,405768,log(1 + prior-12m complaint problems),2.173515070898349,2.1405831230977848,2.206953662507433,0.7286696146162311
+buildings with zero complaint problems in the prior 12 months,311335,"predicted condition (p_hat), per +1 SD of logit",1.7032833817189779,1.6490186081168767,1.759333863280706,1.4090385336343598

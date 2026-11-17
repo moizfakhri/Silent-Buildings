@@ -1,0 +1,97 @@
+{
+  "rows": [
+    {
+      "target": "label_serious_any",
+      "fold": "fold1",
+      "pr_auc_base": 0.6255287825106796,
+      "pr_auc_text": 0.6256928683639289,
+      "gain": 0.00016408585324934055,
+      "roc_base": 0.9176589582476905,
+      "roc_text": 0.9183616368446395,
+      "p5_base": 0.7090147586757081,
+      "p5_text": 0.7064220183486238
+    },
+    {
+      "target": "label_serious_any",
+      "fold": "fold2",
+      "pr_auc_base": 0.6533026049813062,
+      "pr_auc_text": 0.6530376986036834,
+      "gain": -0.0002649063776227756,
+      "roc_base": 0.9283597755353554,
+      "roc_text": 0.9282454885485396,
+      "p5_base": 0.740174672489083,
+      "p5_text": 0.7398273124255657
+    },
+    {
+      "target": "label_serious_any",
+      "fold": "fold3",
+      "pr_auc_base": 0.6602765601097129,
+      "pr_auc_text": 0.6601158199593761,
+      "gain": -0.00016074015033684663,
+      "roc_base": 0.9334433830661213,
+      "roc_text": 0.9335026078503184,
+      "p5_base": 0.7353173818469448,
+      "p5_text": 0.7350207632983983
+    },
+    {
+      "target": "label_serious_any",
+      "fold": "test",
+      "pr_auc_base": 0.6449641236405383,
+      "pr_auc_text": 0.6459969169406733,
+      "gain": 0.0010327933001349487,
+      "roc_base": 0.9279153142346881,
+      "roc_text": 0.9279479560146054,
+      "p5_base": 0.7266903213088902,
+      "p5_text": 0.7277252119061699
+    },
+    {
+      "target": "label_vacate_or_dobhaz_core",
+      "fold": "fold3",
+      "pr_auc_base": 0.04523341763539651,
+      "pr_auc_text": 0.04306073648422622,
+      "gain": -0.0021726811511702943,
+      "roc_base": 0.8389718734617976,
+      "roc_text": 0.8403863587304053,
+      "p5_base": 0.042070397468855054,
+      "p5_text": 0.04132885109748863
+    },
+    {
+      "target": "label_vacate_or_dobhaz_core",
+      "fold": "test",
+      "pr_auc_base": 0.03184367302052005,
+      "pr_auc_text": 0.03254586754134232,
+      "gain": 0.0007021945208222705,
+      "roc_base": 0.8209779417589591,
+      "roc_text": 0.8211517129671975,
+      "p5_base": 0.038192391090084765,
+      "p5_text": 0.03696037847427558
+    }
+  ],
+  "test_gain_serious_any": {
+    "gain": 0.0010327933001349487,
+    "lo": 0.0005085851148627307,
+    "hi": 0.0015608211790731552
+  },
+  "test_gain_primary": {
+    "gain": 0.0007021945208222705,
+    "lo": -0.00021664417051525984,
+    "hi": 0.001760508859991096
+  },
+  "folds_positive": 2,
+  "adoption_rule": "test PR-AUC gain >= 0.005 with the paired 95% interval above 0 and a positive gain in >= 3 of 4 folds",
+  "adopt_text_features": false,
+  "features": [
+    "txt_heat_hot_water_n_12m",
+    "txt_mold_leak_n_12m",
+    "txt_pests_n_12m",
+    "txt_lead_n_12m",
+    "txt_fire_safety_n_12m",
+    "txt_gas_electric_n_12m",
+    "txt_structural_n_12m",
+    "txt_sanitation_n_12m",
+    "txt_plumbing_n_12m",
+    "txt_doors_locks_windows_n_12m",
+    "txt_hazard_share_12m"
+  ],
+  "seconds": 224
+}

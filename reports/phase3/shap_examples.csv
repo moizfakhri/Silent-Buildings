@@ -1,0 +1,25 @@
+example,bbl,snapshot_date,score,rank_in_snapshot,outcome,feature,value,shap
+highest-scoring true positive,example building 1,2025-10-01,0.987198728308656,1,1,loud_prob_n_12m,294.0,1.9
+highest-scoring true positive,example building 1,2025-10-01,0.987198728308656,1,1,viol_open_n,563.0,0.758
+highest-scoring true positive,example building 1,2025-10-01,0.987198728308656,1,1,prior_omo_months_since,1.0,0.613
+highest-scoring true positive,example building 1,2025-10-01,0.987198728308656,1,1,viol_c_n_3m,17.0,0.512
+highest-scoring true positive,example building 1,2025-10-01,0.987198728308656,1,1,viol_open_c_n,197.0,0.486
+highest-scoring true positive,example building 1,2025-10-01,0.987198728308656,1,1,prior_omo_n_12m,13.0,0.42
+"silent: event in a 'quiet' building the violation rule misses, still in the model's top 5%",example building 2,2025-10-01,0.6397223358184904,3984,1,prior_omo_months_since,3.0,1.457
+"silent: event in a 'quiet' building the violation rule misses, still in the model's top 5%",example building 2,2025-10-01,0.6397223358184904,3984,1,prior_omo_n,128.0,0.749
+"silent: event in a 'quiet' building the violation rule misses, still in the model's top 5%",example building 2,2025-10-01,0.6397223358184904,3984,1,viol_open_b_n,306.0,0.661
+"silent: event in a 'quiet' building the violation rule misses, still in the model's top 5%",example building 2,2025-10-01,0.6397223358184904,3984,1,viol_open_c_n,77.0,0.571
+"silent: event in a 'quiet' building the violation rule misses, still in the model's top 5%",example building 2,2025-10-01,0.6397223358184904,3984,1,viol_open_n,546.0,0.431
+"silent: event in a 'quiet' building the violation rule misses, still in the model's top 5%",example building 2,2025-10-01,0.6397223358184904,3984,1,loud_prob_n_12m,0.0,-0.273
+high-scoring false positive,example building 3,2025-10-01,0.9778151171781816,73,0,loud_prob_n_12m,107.0,1.845
+high-scoring false positive,example building 3,2025-10-01,0.9778151171781816,73,0,viol_open_n,347.0,0.76
+high-scoring false positive,example building 3,2025-10-01,0.9778151171781816,73,0,prior_omo_months_since,2.0,0.624
+high-scoring false positive,example building 3,2025-10-01,0.9778151171781816,73,0,viol_c_n_3m,13.0,0.497
+high-scoring false positive,example building 3,2025-10-01,0.9778151171781816,73,0,viol_open_c_n,122.0,0.494
+high-scoring false positive,example building 3,2025-10-01,0.9778151171781816,73,0,viol_open_b_n,128.0,0.403
+missed event (positive with a low score),example building 4,2025-10-01,0.002154968610946801,101182,1,static_bldgclass,R6,-0.506
+missed event (positive with a low score),example building 4,2025-10-01,0.002154968610946801,101182,1,loud_prob_n_12m,0.0,-0.407
+missed event (positive with a low score),example building 4,2025-10-01,0.002154968610946801,101182,1,viol_open_n,0.0,-0.197
+missed event (positive with a low score),example building 4,2025-10-01,0.002154968610946801,101182,1,loud_311_n_36m,0.0,-0.159
+missed event (positive with a low score),example building 4,2025-10-01,0.002154968610946801,101182,1,prior_omo_months_since,,-0.158
+missed event (positive with a low score),example building 4,2025-10-01,0.002154968610946801,101182,1,static_borough,BK,-0.148

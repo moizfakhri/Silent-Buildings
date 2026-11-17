@@ -1,0 +1,32 @@
+{
+  "label_vacate_or_dobhaz_core": {
+    "use": "raw",
+    "ece_raw_folds123": 0.0008434175075951477,
+    "ece_cal_folds123": 0.00109567371397654
+  },
+  "label_vacate_or_dobhaz": {
+    "use": "cal",
+    "ece_raw_folds123": 0.009810832376913216,
+    "ece_cal_folds123": 0.004808179054077141
+  },
+  "label_serious_any": {
+    "use": "raw",
+    "ece_raw_folds123": 0.0036756253947193345,
+    "ece_cal_folds123": 0.0041678746373629665
+  },
+  "label_omo": {
+    "use": "raw",
+    "ece_raw_folds123": 0.002009899260250168,
+    "ece_cal_folds123": 0.003162621889724107
+  },
+  "label_vacate_or_aep": {
+    "use": "raw",
+    "ece_raw_folds123": 0.0004376003734635016,
+    "ece_cal_folds123": 0.000623242876173458
+  },
+  "label_litigation": {
+    "use": "cal",
+    "ece_raw_folds123": 0.005980751788145224,
+    "ece_cal_folds123": 0.005375018112357587
+  }
+}

@@ -1,0 +1,9 @@
+step,n
+DOF sale rows in the data,301701
+"whole-building rows on analysis buildings (any price, any year)",42416
+arms-length proxy sales 2018 onward,17553
+distinct buildings with such a sale,15766
+"first sale with a full window (8 before, 8 after) and no other sale inside it",8500
+analysis buildings with no whole-building DOF row at all (never-treated controls),70157
+in the marts (analysis universe) - treated,8500
+in the marts (analysis universe) - never-treated controls,70157

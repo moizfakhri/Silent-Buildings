@@ -1,0 +1,12 @@
+{
+  "acris_master_open_data_vs_dof_ratio_2021_2025": 0.08111224755830977,
+  "acris_passes_coverage_rule": false,
+  "dof_full_window_sales": 8480,
+  "dof_passes_volume_rule": true,
+  "spine_lots": 101749,
+  "never_sold_controls": 72502,
+  "quarterly_cohorts": 19,
+  "cohorts_under_25": 0,
+  "decision": "ACRIS Master extract: NOT usable (coverage). DOF sales panel: feasible",
+  "rule": "source volume >= 60% of an independent count AND >= 800 arms-length matched sales with a full 8+8 quarter window"
+}

@@ -1,0 +1,6 @@
+fold,rows,silent_rows,silent_resid_rows,access_blocked_rows,events_primary,events_primary_in_silent,events_wide,events_wide_in_silent,events_serious_any,events_serious_any_in_silent,events_omo,events_omo_in_silent,events_vacate_or_aep,events_vacate_or_aep_in_silent,events_litigation,events_litigation_in_silent
+fold1,401088,40163,8620,5438,2280,290,3503,418,32609,1528,25518,1126,1902,75,14215,512
+fold2,402968,40313,9616,5610,2256,253,5574,717,34140,1705,26366,1164,1764,94,15968,658
+fold3,404536,40459,10931,6330,2128,193,4876,589,33143,1509,24697,918,1952,94,15475,642
+test,405768,40611,10672,7631,2281,213,2546,262,34315,1603,26293,1060,2181,108,14452,601
+all,1614360,161546,39839,25009,8945,949,16499,1986,134207,6345,102874,4268,7799,371,60110,2413

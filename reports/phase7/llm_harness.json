@@ -1,0 +1,27 @@
+{
+  "mode": "harness (deterministic stubs, NOT model results)",
+  "text_to_sql": {
+    "stub-oracle": {
+      "execution_accuracy": 1.0,
+      "executable": 1.0,
+      "n": 58
+    },
+    "stub-wrong": {
+      "execution_accuracy": 0.0,
+      "executable": 1.0,
+      "n": 58
+    },
+    "stub-keyword": {
+      "execution_accuracy": 0.034482758620689655,
+      "executable": 1.0,
+      "n": 58
+    }
+  },
+  "biography": {
+    "buildings": 40,
+    "template_fully_verified": 40,
+    "numeric_corruptions_tried": 40,
+    "numeric_corruptions_caught": 40,
+    "invented_ids_caught": 40
+  }
+}
