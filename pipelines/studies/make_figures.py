@@ -32,7 +32,18 @@ def style_ax(ax):
     ax.spines["bottom"].set_color("#c5cbd4")
     ax.grid(axis="y", color=GRID, linewidth=0.8, zorder=0)
     ax.set_axisbelow(True)
-    ax.tick_params(colors=INK, labelsize=9.5)
+    ax.tick_params(colors=INK, labelsize=10.2)
+    ax.xaxis.label.set_size(10.5)
+    ax.yaxis.label.set_size(10.5)
+
+
+def save_fig(fig, path: Path):
+    """Save crisp 240-DPI Retina PNG with a subtle archival frame that looks clean on both GitHub Light and Dark modes."""
+    fig.patch.set_edgecolor("#cfc8b8")
+    fig.patch.set_linewidth(1.5)
+    plt.tight_layout(pad=1.8)
+    fig.savefig(path, dpi=240, facecolor=CREAM, edgecolor="#cfc8b8")
+    plt.close(fig)
 
 
 def fig_study1():
@@ -43,7 +54,7 @@ def fig_study1():
     tiers = pd.read_csv(tiers_p)
     regs = pd.read_csv(reg_p)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.4), facecolor=CREAM)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.2, 4.7), facecolor=CREAM)
     # Left: Quiet buildings (0 complaints & 0 violations) next-year Class C rate by sister-building tier
     labels = ["Clean\n(0)", "Low\n(<0.05)", "Medium\n(0.05–0.15)", "High\n(0.15–0.35)", "Severe\n(0.35+)"]
     x = np.arange(len(tiers))
@@ -89,9 +100,7 @@ def fig_study1():
     ax2.grid(axis="x", color=GRID, linewidth=0.8)
     ax2.grid(axis="y", visible=False)
 
-    plt.tight_layout(pad=1.6)
-    fig.savefig(FIG / "study1_portfolio_contagion.png", dpi=180, facecolor=CREAM)
-    plt.close(fig)
+    save_fig(fig, FIG / "study1_portfolio_contagion.png")
 
 
 def fig_study2():
@@ -99,7 +108,7 @@ def fig_study2():
     conc = pd.read_csv(REP / "study2_concentration.csv")
     c1 = conc[conc["top_pct"] == 1.0].copy()
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.4), facecolor=CREAM)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.2, 4.7), facecolor=CREAM)
     # Left: Concentration top 1% buildings vs top 1% units (rate-ranked)
     short = {
         "omo_usd": "Taxpayer OMO ($)",
@@ -141,16 +150,14 @@ def fig_study2():
     ax2.set_ylim(0, 108)
     style_ax(ax2)
 
-    plt.tight_layout(pad=1.6)
-    fig.savefig(FIG / "study2_concentration_heat.png", dpi=180, facecolor=CREAM)
-    plt.close(fig)
+    save_fig(fig, FIG / "study2_concentration_heat.png")
 
 
 def fig_study3():
     km = pd.read_csv(REP / "study3_km_survival.csv")
     mo = pd.read_csv(REP / "study3_complaint_seasonality.csv")
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.4), facecolor=CREAM)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.2, 4.7), facecolor=CREAM)
     # Left: KM median days to close Class C violations by hazard category
     hc = km[km["group_type"] == "classC_hazard_category"].copy()
     hc = hc[hc["group"] != "other"].sort_values("km_median_days", ascending=True)
@@ -186,30 +193,28 @@ def fig_study3():
     ax2.set_xticks(x)
     ax2.set_xticklabels(months, fontsize=8.5)
     ax2.set_ylabel("Closed HPD Problems (Thousands)", color=MUTED)
-    ax2.set_ylim(0, 440)
+    ax2.set_ylim(0, 460)
     style_ax(ax2)
 
     ax2b = ax2.twinx()
     ax2b.plot(x, mo["pct_violation_issued"], color=VERMILION, marker="o", linewidth=2.4, label="% Violation Issued", zorder=4)
-    ax2b.plot(x, mo["pct_no_access"], color=SLATE, marker="s", linewidth=1.8, linestyle="--", label="% No Inspector Access", zorder=4)
+    ax2b.plot(x, mo["pct_no_access"], color=SLATE, marker="s", linewidth=1.8, linestyle="--", label="% No Access", zorder=4)
     ax2b.set_ylabel("% of Closed Complaints", color=VERMILION)
-    ax2b.set_ylim(0, 92)
+    ax2b.set_ylim(0, 96)
     ax2b.spines["top"].set_visible(False)
     ax2.set_title("Winter Enforcement Bottleneck: Volume Doubles,\nViolation-Issuance Rate Drops in Half (68% → 33%)", fontsize=10.5, fontweight="bold", color=INK, pad=10)
     lines1, labels1 = ax2.get_legend_handles_labels()
     lines2, labels2 = ax2b.get_legend_handles_labels()
-    ax2b.legend(lines1 + lines2, labels1 + labels2, frameon=False, fontsize=8.2, loc="upper center", ncol=3)
+    ax2b.legend(lines1 + lines2, labels1 + labels2, frameon=False, fontsize=8.2, loc="upper center", ncol=3, columnspacing=1.0, handlelength=1.6)
 
-    plt.tight_layout(pad=1.6)
-    fig.savefig(FIG / "study3_zombie_classC_seasonality.png", dpi=180, facecolor=CREAM)
-    plt.close(fig)
+    save_fig(fig, FIG / "study3_zombie_classC_seasonality.png")
 
 
 def fig_study4():
     cem = pd.read_csv(REP / "study4_cem_comparison.csv")
     es = pd.read_csv(REP / "study4_event_study.csv")
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.4), facecolor=CREAM)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.2, 4.7), facecolor=CREAM)
     # Left: CEM ratios (evicting vs matched same-size same-CD non-evicting)
     sub = cem[cem["metric"] != "units_residential"].copy()
     labels = {
@@ -248,9 +253,7 @@ def fig_study4():
     ax2.legend(frameon=False, fontsize=8.5, loc="lower left")
     style_ax(ax2)
 
-    plt.tight_layout(pad=1.6)
-    fig.savefig(FIG / "study4_eviction_hazard.png", dpi=180, facecolor=CREAM)
-    plt.close(fig)
+    save_fig(fig, FIG / "study4_eviction_hazard.png")
 
 
 def fig_study5():
@@ -258,7 +261,7 @@ def fig_study5():
     rel = pd.read_csv(REP / "study5_aep_relapse.csv").iloc[0]
     sh = pd.read_csv(REP / "study5_sales_heterogeneous.csv")
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.4), facecolor=CREAM)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.2, 4.7), facecolor=CREAM)
     # Left: AEP OMO event study + post-discharge relapse callout
     om = aep_ev[aep_ev["outcome"] == "any_omo_q"].copy()
     ref = pd.DataFrame([{"outcome": "any_omo_q", "event_q": -1, "theta": 0.0, "lo": 0.0, "hi": 0.0}])
@@ -295,9 +298,7 @@ def fig_study5():
     ax2.legend(frameon=False, fontsize=8.5, loc="upper left")
     style_ax(ax2)
 
-    plt.tight_layout(pad=1.6)
-    fig.savefig(FIG / "study5_aep_and_sales.png", dpi=180, facecolor=CREAM)
-    plt.close(fig)
+    save_fig(fig, FIG / "study5_aep_and_sales.png")
 
 
 def main():

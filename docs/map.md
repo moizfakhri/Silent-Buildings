@@ -4,10 +4,11 @@ A static, zero-build-step civic cartography web application (MapLibre GL JS 4.7.
 
 ![NYC Housing Monitor — 3D Atlas and Building Report Card](img/atlas_3d_report_card.png)
 
-| | |
-|---|---|
-| ![Investigations broadsheet](img/atlas_investigations.png) | ![District Rankings ledger](img/atlas_rankings.png) |
-| Interactive empirical investigations with deep-links to the 3D Atlas | Sortable 30-district neighborhood ledger (click any row to fly there) |
+### Investigations Broadsheet
+![Investigations broadsheet](img/atlas_investigations.png)
+
+### Sortable 30-District Neighborhood Rankings
+![District Rankings ledger](img/atlas_rankings.png)
 
 ## Run it
 

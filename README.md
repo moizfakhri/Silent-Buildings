@@ -14,7 +14,9 @@ Leakage-tested DuckDB + LightGBM pipelines, five empirical investigations, and a
 
 [Key Findings](#key-findings) · [3D Atlas & Web App](#the-3d-atlas) · [How It Works](#how-it-works) · [Quickstart](#quickstart) · [Full Investigations](docs/STUDIES.md) · [Technical Report](docs/REPORT.md)
 
-<img src="docs/img/atlas_3d_report_card.png" alt="NYC Housing Monitor — 3D Atlas of Bronx & Brooklyn residential buildings with Building Report Card" width="880">
+<p align="center">
+  <img src="docs/img/atlas_3d_report_card.png" alt="NYC Housing Monitor — 3D Atlas of Bronx & Brooklyn residential buildings with Building Report Card" width="100%">
+</p>
 
 </div>
 
@@ -42,24 +44,37 @@ Looking deeper across **13.9 million public records** (HPD violations, complaint
 | **5. AEP Relapse, Sales & Vacate Subtypes** | AEP cuts OMO while active but 70% relapse after discharge; sales do not cure distressed buildings. | Discharged AEP (`n=1,022`): **70.2%** get 5+ new Class C in 2y, **62.0%** need new OMO, **26.9%** re-enter AEP. Distressed sales (`n=674`): Class C unchanged (`+1.8 pp [-2.1, +5.3]`). **58.4%** of vacates are Fire Damage. | [Study 5](docs/STUDIES.md#study-5--aep-relapse-heterogeneous-sales--vacate-subtypes) |
 | **Baseline & Null Findings (Honest Audit)** | Standalone silence is not hidden danger; walk-forward LightGBM beats violation rules; RAG failed its gates. | Out-of-time PR-AUC **0.645 vs 0.558** across 16/16 snapshots ([Phase 3](docs/modeling_phase3.md)). Standalone silent O/E **0.84 [0.76, 0.91]** ([Phase 4](docs/silent_distress_phase4.md)). SQL keywords beat BM25 RAG **0.668 vs 0.526** ([Phase 7](docs/llm_layer.md)). | [Report](docs/REPORT.md) |
 
-<table>
-<tr>
-<td width="50%"><img src="reports/studies/figures/study1_portfolio_contagion.png" alt="Landlord portfolio contagion in quiet buildings"></td>
-<td width="50%"><img src="reports/studies/figures/study2_concentration_heat.png" alt="Extreme concentration and 7-winter heat recidivism"></td>
-</tr>
-<tr>
-<td align="center"><sub><b>Study 1:</b> Sister-building distress triples Class C risk in completely quiet buildings</sub></td>
-<td align="center"><sub><b>Study 2:</b> Top 1% consume 50.4% of OMO dollars; 6/6 heat repeaters fail again 92% of the time</sub></td>
-</tr>
-<tr>
-<td width="50%"><img src="reports/studies/figures/study3_zombie_classC_seasonality.png" alt="Kaplan-Meier Class C survival and winter bottleneck"></td>
-<td width="50%"><img src="reports/studies/figures/study4_eviction_hazard.png" alt="Eviction-hazard paradox matched comparison and event study"></td>
-</tr>
-<tr>
-<td align="center"><sub><b>Study 3:</b> Kaplan-Meier survival of "24-hour" Class C hazards and winter enforcement drop</sub></td>
-<td align="center"><sub><b>Study 4:</b> Evicting buildings carry 1.95× Class C/unit vs identical-size same-district peers</sub></td>
-</tr>
-</table>
+### Visual Evidence
+
+<p align="center">
+  <img src="reports/studies/figures/study1_portfolio_contagion.png" alt="Study 1: Landlord portfolio contagion in completely quiet buildings" width="100%"><br>
+  <sub><b>Study 1 — Portfolio Contagion:</b> Sister-building Class C distress nearly triples next-year Class C risk in completely quiet buildings (0 complaints, 0 violations); shuffled-portfolio placebo is null (OR 0.96).</sub>
+</p>
+
+<p align="center">
+  <img src="reports/studies/figures/study2_concentration_heat.png" alt="Study 2: Extreme concentration and 7-winter heat recidivism" width="100%"><br>
+  <sub><b>Study 2 — Chronic Concentration:</b> Top 1% of buildings absorb 50.4% of taxpayer OMO dollars (unit-weighted Gini 0.917); buildings failing 6/6 prior winters fail again 92.0% of the time.</sub>
+</p>
+
+<details>
+<summary><b>View full-width figures for Studies 3, 4 &amp; 5 (Zombie Class C Survival, Eviction–Hazard Paradox, AEP Relapse &amp; Sales)</b></summary>
+
+<p align="center">
+  <img src="reports/studies/figures/study3_zombie_classC_seasonality.png" alt="Study 3: Kaplan-Meier Class C survival and winter bottleneck" width="100%"><br>
+  <sub><b>Study 3 — Enforcement Breakdown:</b> Kaplan-Meier survival across 1.06M "24-hour" Class C violations (Mold 590d, Pests 265d, Lead 256d) and the winter violation-yield collapse (68% → 33%).</sub>
+</p>
+
+<p align="center">
+  <img src="reports/studies/figures/study4_eviction_hazard.png" alt="Study 4: Eviction-hazard paradox matched comparison and event study" width="100%"><br>
+  <sub><b>Study 4 — Eviction–Hazard Paradox:</b> Evicting buildings carry 1.95× more Class C hazards/unit and 2.11× more harassment suits than identical-size same-district peers; complaints drop -2.0 pp after eviction.</sub>
+</p>
+
+<p align="center">
+  <img src="reports/studies/figures/study5_aep_and_sales.png" alt="Study 5: AEP emergency repair reduction, post-discharge relapse, and heterogeneous post-sale effects" width="100%"><br>
+  <sub><b>Study 5 — Interventions &amp; Sales:</b> AEP cuts OMO repairs ~20 pp while active yet 70.2% of discharged buildings relapse within 2 years; whole-building sales do not cure distressed buildings.</sub>
+</p>
+
+</details>
 
 ---
 
@@ -67,16 +82,15 @@ Looking deeper across **13.9 million public records** (HPD violations, complaint
 
 A static, zero-build-step civic cartography web app (`app/web/`) built with MapLibre GL and PMTiles. It extrudes **120,705 residential footprints** to their true roof height and integrates three views:
 
-<table>
-<tr>
-<td width="50%"><img src="docs/img/atlas_investigations.png" alt="Investigations broadsheet view"></td>
-<td width="50%"><img src="docs/img/atlas_rankings.png" alt="Sortable 30-district neighborhood rankings"></td>
-</tr>
-<tr>
-<td align="center"><sub><b>Investigations view:</b> All 5 studies with interactive charts and "Inspect on 3D Atlas" jumps</sub></td>
-<td align="center"><sub><b>District Rankings:</b> All 30 named Bronx & Brooklyn neighborhoods, sortable and click-to-fly</sub></td>
-</tr>
-</table>
+<p align="center">
+  <img src="docs/img/atlas_investigations.png" alt="Investigations broadsheet view with KPI strip and Study 1 charts" width="100%"><br>
+  <sub><b>Investigations view:</b> All 5 empirical studies with interactive charts, caveats, and one-click "Inspect on 3D Atlas" jumps.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/atlas_rankings.png" alt="Sortable 30-district neighborhood rankings table" width="100%"><br>
+  <sub><b>District Rankings:</b> All 30 named Bronx &amp; Brooklyn neighborhoods—sortable across every metric, click any row to fly there in 3D.</sub>
+</p>
 
 - **8 map layers** spanning the 5 investigations (*7-Winter Heat Recidivism*, *Taxpayer OMO Spend*, *Open "Zombie" Class C*, *Portfolio Contagion*, *Marshal Evictions*) and 16 out-of-time quarterly model snapshots (*Enforcement Risk*, *Complaint Gap*, *No-Access Rate*).
 - **Instant address, neighborhood, & BBL search** (`/` shortcut) across 101,442 lots via 283 static prefix shards.

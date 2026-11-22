@@ -392,10 +392,9 @@ Run it with `make map && make serve` (see [`docs/map.md`](../docs/map.md)).
 
 ![NYC Housing Monitor 3D Atlas and Building Report Card](../docs/img/atlas_3d_report_card.png)
 
-| | |
-|---|---|
-| ![Investigations broadsheet](../docs/img/atlas_investigations.png) | ![District Rankings](../docs/img/atlas_rankings.png) |
-| Interactive empirical investigations | Sortable 30-neighborhood ledger |"""),
+![Investigations broadsheet](../docs/img/atlas_investigations.png)
+
+![District Rankings](../docs/img/atlas_rankings.png)"""),
     ("code", r'''from nbutil import *
 import json
 WEB = ROOT / "app" / "web" / "data"

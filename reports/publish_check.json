@@ -1,6 +1,6 @@
 {
  "n_files": 219,
- "total_mb": 11.21,
+ "total_mb": 11.66,
  "largest": [
   [
    1.61,
@@ -35,20 +35,20 @@
    "notebooks/05_sale_study.ipynb"
   ],
   [
+   0.3,
+   "reports/studies/figures/study5_aep_and_sales.png"
+  ],
+  [
+   0.3,
+   "reports/studies/figures/study4_eviction_hazard.png"
+  ],
+  [
+   0.29,
+   "reports/studies/figures/study3_zombie_classC_seasonality.png"
+  ],
+  [
    0.28,
    "notebooks/06_map_tour.ipynb"
-  ],
-  [
-   0.22,
-   "notebooks/04_silent_distress.ipynb"
-  ],
-  [
-   0.22,
-   "app/web/data/districts.json"
-  ],
-  [
-   0.21,
-   "reports/studies/figures/study3_zombie_classC_seasonality.png"
   ]
  ],
  "over_5mb": [],
