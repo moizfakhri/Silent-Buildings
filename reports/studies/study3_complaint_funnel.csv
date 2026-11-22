@@ -1,0 +1,7 @@
+outcome_cat,problems,pct,median_days
+violation_issued,1385788,48.12,7.0
+other_closed,885978,30.77,2.0
+no_access,430459,14.95,18.0
+restored_before_inspect,175633,6.1,2.0
+open_complaint,1388,0.05,0.0
+notice_only,493,0.02,9.0

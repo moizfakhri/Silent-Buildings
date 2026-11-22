@@ -1,0 +1,4 @@
+outcome,n_treated,n_control,avg_post,avg_post_lo,avg_post_hi,adj_post,adj_post_lo,adj_post_hi,pre_trend_p
+any_classC_q,6844,89685,-0.01341,-0.02376,-0.00277,-0.02859,-0.04157,-0.0133,0.00097
+any_complaint_q,6844,89685,-0.02033,-0.02988,-0.01038,-0.02662,-0.04238,-0.00995,0.59995
+classC_count_q,6844,89685,0.04438,-0.03087,0.11485,-0.09485,-0.2032,0.00042,8e-05

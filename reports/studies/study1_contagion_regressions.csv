@@ -1,0 +1,16 @@
+slice,outcome,exposure,n,portfolios,events,base_rate_pct,beta,se,or,ci_lo,ci_hi,z,p
+quiet_0v_0c,label_class_c_any,z_sister_vc,38110,4969,3486,9.15,0.2968,0.024,1.346,1.284,1.41,12.38,3.461051341439936e-35
+quiet_0v_0c,label_serious_any,z_sister_vc,38110,4969,1130,2.97,0.273,0.0342,1.314,1.229,1.405,7.98,1.5032553923470106e-15
+quiet_0v_0c,label_vacate_or_dobhaz_core,z_sister_vc,38110,4969,152,0.4,0.1023,0.1053,1.108,0.901,1.361,0.97,0.3311969298911688
+quiet_0v_0c_placebo,label_class_c_any,z_sister_placebo,38110,4969,3486,9.15,-0.0406,0.0219,0.96,0.92,1.002,-1.85,0.06369552400791045
+quiet_0v_0c_placebo,label_serious_any,z_sister_placebo,38110,4969,1130,2.97,-0.0418,0.037,0.959,0.892,1.031,-1.13,0.25912185163205037
+quiet_never_sold,label_class_c_any,z_sister_vc,29346,4433,2675,9.12,0.3103,0.0268,1.364,1.294,1.437,11.58,5.383118460538703e-31
+quiet_never_sold,label_serious_any,z_sister_vc,29346,4433,811,2.76,0.3088,0.0393,1.362,1.261,1.471,7.85,4.048638757561985e-15
+quiet_small_port_le50,label_class_c_any,z_sister_vc,32330,4903,2764,8.55,0.2919,0.0232,1.339,1.279,1.401,12.57,3.231605574104613e-36
+phase4_silent,label_class_c_any,z_sister_vc,10710,2531,1500,14.01,0.2382,0.0355,1.269,1.184,1.36,6.71,1.9834512732905104e-11
+phase4_silent,label_serious_any,z_sister_vc,10710,2531,556,5.19,0.2363,0.0508,1.267,1.147,1.399,4.65,3.284339590823596e-06
+phase4_silent,label_vacate_or_dobhaz_core,z_sister_vc,10710,2531,105,0.98,-0.0367,0.1725,0.964,0.687,1.352,-0.21,0.8313054816203675
+all_multi_port,label_class_c_any,z_sister_vc,127486,5482,42421,33.28,0.5107,0.0166,1.667,1.613,1.722,30.69,6.778881267381768e-207
+all_multi_port,label_serious_any,z_sister_vc,127486,5482,22443,17.6,0.5307,0.0155,1.7,1.649,1.753,34.17,5.934611895712099e-256
+quiet_headofficer_only,label_class_c_any,z_sister_vc,34688,4165,3344,9.64,0.3021,0.0247,1.353,1.289,1.42,12.23,2.1137201912233935e-34
+quiet_headofficer_only,label_serious_any,z_sister_vc,34688,4165,1082,3.12,0.2852,0.0351,1.33,1.242,1.425,8.12,4.568765994923118e-16

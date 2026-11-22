@@ -1,0 +1,31 @@
+metric,label,total,top_pct,n_buildings_top,share_by_top_bldgs_pct,units_in_top_bldgs_pct,share_by_top_units_rate_pct,gini_building,gini_unit_weighted
+viol_c,Class C violations (2018+),1214469.0,0.5,509,20.64,5.18,11.5,0.9055,0.7934
+viol_c,Class C violations (2018+),1214469.0,1.0,1017,31.32,8.44,17.95,0.9055,0.7934
+viol_c,Class C violations (2018+),1214469.0,2.0,2035,45.72,12.65,27.43,0.9055,0.7934
+viol_c,Class C violations (2018+),1214469.0,5.0,5087,68.68,23.02,45.57,0.9055,0.7934
+viol_c,Class C violations (2018+),1214469.0,10.0,10175,85.28,35.78,63.35,0.9055,0.7934
+open_c,Open Class C violations,279071.0,0.5,509,20.35,5.15,17.18,0.9061,0.8343
+open_c,Open Class C violations,279071.0,1.0,1017,30.22,7.23,25.01,0.9061,0.8343
+open_c,Open Class C violations,279071.0,2.0,2035,43.58,11.0,35.44,0.9061,0.8343
+open_c,Open Class C violations,279071.0,5.0,5087,66.54,19.46,53.23,0.9061,0.8343
+open_c,Open Class C violations,279071.0,10.0,10175,84.84,30.58,69.83,0.9061,0.8343
+omo_usd,Taxpayer OMO spend ($),196138837.5,0.5,509,39.62,3.58,40.98,0.9533,0.917
+omo_usd,Taxpayer OMO spend ($),196138837.5,1.0,1017,50.38,5.89,48.92,0.9533,0.917
+omo_usd,Taxpayer OMO spend ($),196138837.5,2.0,2035,64.13,8.87,58.24,0.9533,0.917
+omo_usd,Taxpayer OMO spend ($),196138837.5,5.0,5087,84.26,17.71,73.36,0.9533,0.917
+omo_usd,Taxpayer OMO spend ($),196138837.5,10.0,10175,95.82,29.24,85.89,0.9533,0.917
+evict_n,Executed evictions (2018+),51318.0,0.5,509,22.83,12.07,8.91,0.9219,0.7627
+evict_n,Executed evictions (2018+),51318.0,1.0,1017,32.88,16.17,13.64,0.9219,0.7627
+evict_n,Executed evictions (2018+),51318.0,2.0,2035,46.68,22.31,21.52,0.9219,0.7627
+evict_n,Executed evictions (2018+),51318.0,5.0,5087,70.12,33.79,37.69,0.9219,0.7627
+evict_n,Executed evictions (2018+),51318.0,10.0,10175,88.29,43.7,56.03,0.9219,0.7627
+litig_n,HPD litigations (2018+),45065.0,0.5,509,18.24,6.06,13.86,0.9197,0.8361
+litig_n,HPD litigations (2018+),45065.0,1.0,1017,28.58,9.16,21.01,0.9197,0.8361
+litig_n,HPD litigations (2018+),45065.0,2.0,2035,43.39,13.68,31.06,0.9197,0.8361
+litig_n,HPD litigations (2018+),45065.0,5.0,5087,69.0,23.96,50.39,0.9197,0.8361
+litig_n,HPD litigations (2018+),45065.0,10.0,10175,88.43,35.56,69.23,0.9197,0.8361
+hw_probs_7w,Winter heat/hot-water complaints (7 winters),892321.0,0.5,509,32.89,6.17,17.31,0.932,0.8117
+hw_probs_7w,Winter heat/hot-water complaints (7 winters),892321.0,1.0,1017,44.37,9.1,24.22,0.932,0.8117
+hw_probs_7w,Winter heat/hot-water complaints (7 winters),892321.0,2.0,2035,58.22,13.97,33.54,0.932,0.8117
+hw_probs_7w,Winter heat/hot-water complaints (7 winters),892321.0,5.0,5087,77.99,25.81,50.66,0.932,0.8117
+hw_probs_7w,Winter heat/hot-water complaints (7 winters),892321.0,10.0,10175,90.57,38.56,66.78,0.932,0.8117

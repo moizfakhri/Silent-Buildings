@@ -1,0 +1,4 @@
+outcome,n_aep_treated,n_highviol_ctrl,avg_post_q0_q8,avg_post_lo,avg_post_hi,pre_trend_p
+classC_count_q,458,9156,-2.8829,-3.8156,-2.0861,0.0
+complaints_count_q,458,9156,-3.3347,-5.4469,-1.45,0.0
+any_omo_q,458,9156,-0.1926,-0.2386,-0.1475,0.0

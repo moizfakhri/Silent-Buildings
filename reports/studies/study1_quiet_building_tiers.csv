@@ -1,0 +1,6 @@
+sister_tier,rows,avg_units,pct_class_c_next12m,pct_serious_next12m,pct_omo_next12m,pct_vacate_dob_next12m
+0_clean_0,16114,11.0,5.09,1.87,1.27,0.25
+1_low_lt0.05,8347,28.1,9.0,2.86,1.87,0.59
+2_med_0.05_0.15,6913,14.6,13.9,4.33,3.28,0.41
+3_high_0.15_0.35,4656,10.7,14.24,4.04,2.99,0.62
+4_severe_0.35plus,2224,9.1,13.31,4.77,3.6,0.27

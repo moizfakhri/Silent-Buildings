@@ -1,6 +1,6 @@
 PY := .venv/bin/python
 
-.PHONY: setup ingest audit features baseline model evaluate report silent report4 map serve marts llm-eval llm-live llm-experiments sales-feasibility sales notebooks publish-check test lint
+.PHONY: setup ingest audit features baseline model evaluate report silent report4 studies map serve marts llm-eval llm-live llm-experiments sales-feasibility sales notebooks publish-check test lint
 
 # Create the venv (if missing) and install the project with dev and model tools (needs uv).
 setup:
@@ -53,7 +53,17 @@ silent:
 report4:
 	$(PY) pipelines/report_phase4.py
 
-# Phase 6: the 3D map data (needs footprints: make ingest NAMES=building_footprints, and tippecanoe). About 2 minutes.
+# Studies 1-5: portfolio contagion, concentration/heat recidivism, zombie Class C survival,
+# eviction-hazard paradox, vacate subtypes, heterogeneous sales, and AEP relapse + figures.
+studies:
+	$(PY) -u pipelines/studies/study1_portfolio_contagion.py
+	$(PY) -u pipelines/studies/study2_concentration_recidivism.py
+	$(PY) -u pipelines/studies/study3_enforcement_breakdown.py
+	$(PY) -u pipelines/studies/study4_eviction_hazard.py
+	$(PY) -u pipelines/studies/study5_vacates_sales_aep.py
+	$(PY) pipelines/studies/make_figures.py
+
+# Phase 6: the 3D atlas data (footprints, PMTiles, report-card shards, address search, studies digest).
 map:
 	$(PY) pipelines/build_map.py
 

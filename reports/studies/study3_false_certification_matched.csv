@@ -1,0 +1,6 @@
+metric,n_treated,n_control,treated_mean,matched_control_mean,ratio
+pre_vc,512,12304,48.7,46.22,1.054
+units_residential,512,12304,76.6,58.75,1.304
+post_vc,512,12304,33.83,40.51,0.835
+post_omo_usd,512,12304,3557.91,5141.87,0.692
+post_litig,512,12304,0.95,1.06,0.897

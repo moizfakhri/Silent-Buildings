@@ -1,0 +1,7 @@
+outcome,silent_events,control_events,silent_rate_per_10k,matched_ctrl_rate_per_10k,matched_rr,ci_lo,ci_hi
+y_fire,159,2376,13.15,32.44,0.405,0.298,0.512
+y_illegal_occ,53,362,4.38,9.65,0.454,0.266,0.752
+y_habitability,16,152,1.32,4.73,0.28,0.075,0.591
+y_dob_core,515,2498,42.58,49.38,0.862,0.721,1.054
+y_nonfire_primary,581,3011,48.04,63.7,0.754,0.632,0.89
+label_vacate_or_dobhaz_core,736,5291,60.86,94.05,0.647,0.551,0.748
