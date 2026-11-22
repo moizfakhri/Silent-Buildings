@@ -385,22 +385,17 @@ s[["group", "outcome", "n_treated", "avg_post", "avg_post_lo", "avg_post_hi"]].r
 
 # ------------------------------------------------------------------------------------------------------------------ 06
 notebook("06_map_tour", [
-    ("md", """# 06 Map tour: the 3D map and how it is built
+    ("md", """# 06 Map tour: the 3D Civic Atlas and how it is built
 
-A static website (no server code, no external services at view time): Bronx and Brooklyn residential buildings as extruded footprints at their real roof height, coloured by one of five neutral layers, with a snapshot slider, filters, a click panel and a disclaimer.
-Run it with `make map && make serve` (see [`docs/map.md`](../docs/map.md)). The images here are screenshots taken from the running page.
+A static web application (`app/web/`): 120,705 Bronx and Brooklyn residential building footprints extruded to their real roof heights across 8 layers (5 empirical investigation layers + 3 quarterly out-of-time model layers), paired with Building Report Cards, address search, an Investigations broadsheet, and a sortable 30-district Rankings table.
+Run it with `make map && make serve` (see [`docs/map.md`](../docs/map.md)).
 
-![Predicted risk, Brooklyn](../docs/img/map_risk_3d.jpg)
+![NYC Housing Monitor 3D Atlas and Building Report Card](../docs/img/atlas_3d_report_card.png)
 
 | | |
 |---|---|
-| ![panel](../docs/img/map_building_panel.jpg) | ![gap](../docs/img/map_complaint_gap.jpg) |
-| Click panel | Complaint gap layer |
-| ![dark](../docs/img/map_dark_districts.jpg) | ![filter](../docs/img/map_filter_top_gap.jpg) |
-| District overview, dark mode | Top-decile filter |
-
-The five layers: predicted risk of an enforcement event; predicted condition (no complaint information); the complaint gap; the share of closed complaints with no inspector access; observed complaints per unit.
-**Read the gap layer with the Phase 4 verdict in mind: top-decile-gap buildings are not at hidden extra risk** (notebook 04)."""),
+| ![Investigations broadsheet](../docs/img/atlas_investigations.png) | ![District Rankings](../docs/img/atlas_rankings.png) |
+| Interactive empirical investigations | Sortable 30-neighborhood ledger |"""),
     ("code", r'''from nbutil import *
 import json
 WEB = ROOT / "app" / "web" / "data"
@@ -442,8 +437,7 @@ except FileNotFoundError:
     print("sample not present in this checkout")'''),
     ("md", """## One community district, drawn from the committed sample
 
-The sample is one community district (Bronx CD 202) as plain GeoJSON so the page works without the 93 MB tile file. Footprints are coloured by the predicted-risk percentile at the latest snapshot (the tiles store percentiles within each snapshot; the district view above shows mean probabilities).
-(*Publication note: the sample contains per-building model scores; see `docs/PUBLISH_CHECKLIST.md` before making the repository public.*)"""),
+The sample is one community district (Bronx CD 202) as plain GeoJSON so the page works without the 101 MB tile file. Footprints are coloured by the predicted-risk percentile at the latest snapshot (the tiles store percentiles within each snapshot; the district view above shows mean probabilities). No owner or tenant names exist anywhere in the sample."""),
     ("code", r'''try:
     patches, vals = [], []
     for f in g["features"]:

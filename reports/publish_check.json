@@ -1,13 +1,13 @@
 {
- "n_files": 183,
- "total_mb": 10.03,
+ "n_files": 219,
+ "total_mb": 11.21,
  "largest": [
   [
-   1.3,
+   1.61,
    "app/web/data/sample/facts.json"
   ],
   [
-   0.99,
+   1.12,
    "app/web/data/sample/buildings.geojson"
   ],
   [
@@ -15,12 +15,12 @@
    "reports/phase3/metrics_test_ci.csv"
   ],
   [
-   0.86,
-   "docs/img/map_slider.gif"
-  ],
-  [
    0.8,
    "app/web/vendor/maplibre-gl.js"
+  ],
+  [
+   0.48,
+   "docs/img/atlas_3d_report_card.png"
   ],
   [
    0.43,
@@ -43,12 +43,12 @@
    "notebooks/04_silent_distress.ipynb"
   ],
   [
-   0.21,
+   0.22,
    "app/web/data/districts.json"
   ],
   [
-   0.19,
-   "reports/phase5/figures/event_study_silent_vs_not.png"
+   0.21,
+   "reports/studies/figures/study3_zombie_classC_seasonality.png"
   ]
  ],
  "over_5mb": [],
@@ -58,10 +58,10 @@
  "bbl_like_tokens": {
   "app/web/data/sample/buildings.geojson": 1191,
   "app/web/data/sample/facts.json": 1066,
+  "app/web/data/sample/search.json": 1060,
   "app/web/vendor/maplibre-gl.js": 33,
   "app/web/vendor/pmtiles.js": 3,
   "docs/DATASETS.md": 1,
-  "docs/PROJECT_PLAN.md": 1,
   "docs/labels_and_features.md": 1,
   "pipelines/audit.py": 4,
   "pipelines/build_marts.py": 1,

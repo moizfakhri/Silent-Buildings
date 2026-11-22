@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nycdistress"
-version = "0.0.1"
-description = "Silent distress in NYC buildings: modeling what the complaint system cannot hear"
+version = "0.2.0"
+description = "NYC Housing Monitor: empirical studies of landlord portfolio contagion, chronic distress concentration, enforcement breakdowns, and a 3D Bronx & Brooklyn atlas"
 requires-python = ">=3.11"
 dependencies = [
   "duckdb",

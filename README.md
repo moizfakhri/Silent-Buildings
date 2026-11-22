@@ -1,156 +1,162 @@
 <div align="center">
 
-# Silent Buildings
+# NYC Housing Monitor
 
-**Does a building with no complaints hide danger?**<br>
-A leakage-tested pipeline, out-of-time models and a 3D map on 12 NYC Open Data tables,<br>
-covering 101,442 Bronx and Brooklyn residential buildings.
+**What NYC’s complaint-driven housing enforcement misses — landlord portfolio networks, chronic repeaters, and enforcement bottlenecks.**<br>
+Leakage-tested DuckDB + LightGBM pipelines, five empirical investigations, and an interactive 3D atlas across **101,442 Bronx & Brooklyn residential buildings** and **13.9 million NYC Open Data records**.
 
 [![CI](https://github.com/moizfakhri/Silent-Buildings/actions/workflows/ci.yml/badge.svg)](https://github.com/moizfakhri/Silent-Buildings/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![DuckDB](https://img.shields.io/badge/DuckDB-SQL%20pipeline-FFF000?logo=duckdb&logoColor=black)
 ![LightGBM](https://img.shields.io/badge/LightGBM-walk--forward-9ACD32)
-![MapLibre](https://img.shields.io/badge/MapLibre%20GL-3D%20map-396CB2?logo=maplibre&logoColor=white)
+![MapLibre](https://img.shields.io/badge/MapLibre%20GL-3D%20Atlas-396CB2?logo=maplibre&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-[Findings](#findings) · [3D map](#the-3d-map) · [How it works](#how-it-works) · [Quickstart](#quickstart) · [Limitations](#limitations) · [Full report](docs/REPORT.md)
+[Key Findings](#key-findings) · [3D Atlas & Web App](#the-3d-atlas) · [How It Works](#how-it-works) · [Quickstart](#quickstart) · [Full Investigations](docs/STUDIES.md) · [Technical Report](docs/REPORT.md)
 
-<img src="docs/img/map_slider.gif" alt="3D map of the Bronx: buildings coloured by predicted risk, stepping through quarterly snapshots" width="820">
+<img src="docs/img/atlas_3d_report_card.png" alt="NYC Housing Monitor — 3D Atlas of Bronx & Brooklyn residential buildings with Building Report Card" width="880">
 
 </div>
 
-## The short answer
+## The Thesis
 
-NYC housing enforcement learns about bad buildings mostly from tenant complaints. If complaints are the city's sensor, a building whose sensor is silent could be hiding trouble. This project tests that.
+New York City enforces residential housing conditions **one complaint and one building at a time**. We originally tested whether a building’s own lack of complaints hides danger—and found that **on its own, silence reflects ordinary risk** (silent buildings had 16% fewer vacate/DOB-hazard events than predicted).
+
+Looking deeper across **13.9 million public records** (HPD violations, complaints, emergency repair awards, litigations, AEP, vacate orders, registration contacts, DOB violations, marshal evictions, DOF sales, and PLUTO), the real blind spots sit **above** the individual complaint:
 
 > [!IMPORTANT]
-> **Mostly, no.** Buildings that look bad on paper but never complain had **16% fewer** serious events than predicted, not more. Silence mostly reflects ordinary risk.
+> 1. **Portfolio contagion rescues prediction for quiet buildings:** Among buildings with **0 complaints and 0 violations**, sister-building Class C distress nearly triples next-year Class C risk (`5.1% → 14.2%`, controlled **OR 1.35 [1.28, 1.41]**, `p = 3.5e-35`; shuffled placebo **OR 0.96**).
+> 2. **Extreme concentration:** **1% of buildings** absorb **50.4%** of taxpayer emergency repair (OMO) dollars (\$196.1M in spine / \$700M BX+BK all-time), and **1.7% (1,766 buildings)** generate **48.2%** of all winter heat emergencies across 7 consecutive winters.
+> 3. **Systemic enforcement breakdowns:** "24-hour" Class C hazards have a Kaplan-Meier median closure time of **110 days** (**590d** for Mold, **265d** for Pests, **256d** for Lead Paint), winter surge cuts violation issuance in half (**68% → 33%**), **80.9%** of post-moratorium evictions occur inside Class C hazardous buildings, and **70.2%** of buildings discharged from HPD’s flagship AEP program relapse within 2 years.
 
-The hypothesis was fixed before the outcomes were examined, and the validation was designed so that it could fail. It did, and that is reported as the result.
+---
 
-## Findings
+## Key Findings
 
-| Question | Answer | Evidence |
-|---|---|---|
-| Does a model beat "violations last year"? | **Yes, modestly**, at 16 of 16 out-of-time snapshots | PR-AUC 0.645 vs 0.558 · [Phase 3](docs/modeling_phase3.md) |
-| Are silent buildings hiding extra risk? | **No** | observed/predicted 0.84 [0.76, 0.91]; matched relative risk 0.65 [0.59, 0.74] · [Phase 4](docs/silent_distress_phase4.md) |
-| Is there a real censoring mechanism? | **Yes**: 16% of closed complaints end with no inspector access, but those buildings show no extra risk | 0.84 [0.68, 0.99] · [Phase 4](docs/silent_distress_phase4.md) |
-| Does a weaker form survive? | **Yes**: among zero-complaint buildings, predicted condition predicts later complaints | IRR 1.70 per SD [1.65, 1.76] · [Phase 4](docs/silent_distress_phase4.md) |
-| What happens after a sale? | **A small rise** in violations and complaints; serious events do not move | +1.5 and +1.6 points; 8,500 sales · [Phase 5](docs/sales_phase5.md) |
-| Is RAG useful here? | **No**: SQL keyword search beat retrieval | precision@10 0.668 vs 0.526 · [Phase 7](docs/llm_layer.md) |
-
-<table>
-<tr>
-<td width="50%"><img src="reports/phase3/figures/per_snapshot.png" alt="PR-AUC per snapshot"></td>
-<td width="50%"><img src="reports/phase4/figures/matched_forest.png" alt="Matched relative risk by outcome"></td>
-</tr>
-<tr>
-<td align="center"><sub>The model beats the obvious rule at every snapshot</sub></td>
-<td align="center"><sub>Silent buildings are not riskier than matched louder ones</sub></td>
-</tr>
-</table>
-
-## The 3D map
-
-A static site (MapLibre GL and PMTiles, no build step, works offline) that extrudes every building to its real height and colours it by one of five layers.
+| Investigation | Finding | Verified Evidence (95% CI) | Deep Dive |
+|---|---|---|---|
+| **1. Landlord Portfolio Contagion** | Quiet buildings owned alongside distressed sister buildings face ~3× higher next-year Class C risk. | Quiet buildings (`n=38,110`): **OR 1.35 [1.28, 1.41]** (`p=3.5e-35`); never-sold lots **OR 1.36**; shuffled placebo **OR 0.96 [0.92, 1.00]**. Out-of-time LightGBM lift on clean-record buildings: **+29% relative PR-AUC** (`+0.0089 [+0.0016, +0.0179]`). | [Study 1](docs/STUDIES.md#study-1--landlord-portfolio-networks--cross-building-contagion) |
+| **2. The 1% & 7-Winter Heat Recidivism** | Distress is concentrated in chronic repeat offenders, even after controlling for building size. | Top 1% of buildings = **50.4%** of OMO spend (**unit Gini 0.917**). **1,766** 7-winter heat repeaters = **48.2%** of winter emergencies (**79.6%** never in AEP). `6/6` prior winters → **92.0%** fail again in 2024–25. | [Study 2](docs/STUDIES.md#study-2--extreme-concentration-omo-spending--7-winter-heat-recidivism) |
+| **3. "Zombie Class C" & Winter Bottleneck** | Immediately hazardous violations sit open for months to years; winter congestion halves enforcement yield. | Kaplan-Meier median (1.06M Class C): **110d** (**33.3%** open at 1yr, **20.6%** at 3yr). **Mold 590d**, **Pests 265d**, **Lead 256d**. Violation yield drops **67.7% (Aug) → 33.2% (Dec)**. | [Study 3](docs/STUDIES.md#study-3--the-zombie-class-c-enforcement-breakdown--winter-bottleneck) |
+| **4. The Eviction–Hazard Paradox** | Evictions concentrate in hazardous buildings even matched to identical-size same-district peers. | **80.9%** of 31,202 post-moratorium evictions in Class C hazardous buildings (**60.9%** with 5+). Matched CEM: **1.95× [1.84, 2.07]** Class C/unit, **2.11× [1.82, 2.41]** harassment suits; post-eviction complaints drop **-2.0 pp** (`p=0.60` pre-trend). | [Study 4](docs/STUDIES.md#study-4--the-evictionhazard-paradox) |
+| **5. AEP Relapse, Sales & Vacate Subtypes** | AEP cuts OMO while active but 70% relapse after discharge; sales do not cure distressed buildings. | Discharged AEP (`n=1,022`): **70.2%** get 5+ new Class C in 2y, **62.0%** need new OMO, **26.9%** re-enter AEP. Distressed sales (`n=674`): Class C unchanged (`+1.8 pp [-2.1, +5.3]`). **58.4%** of vacates are Fire Damage. | [Study 5](docs/STUDIES.md#study-5--aep-relapse-heterogeneous-sales--vacate-subtypes) |
+| **Baseline & Null Findings (Honest Audit)** | Standalone silence is not hidden danger; walk-forward LightGBM beats violation rules; RAG failed its gates. | Out-of-time PR-AUC **0.645 vs 0.558** across 16/16 snapshots ([Phase 3](docs/modeling_phase3.md)). Standalone silent O/E **0.84 [0.76, 0.91]** ([Phase 4](docs/silent_distress_phase4.md)). SQL keywords beat BM25 RAG **0.668 vs 0.526** ([Phase 7](docs/llm_layer.md)). | [Report](docs/REPORT.md) |
 
 <table>
 <tr>
-<td width="50%"><img src="docs/img/map_complaint_gap.jpg" alt="Complaint gap layer"></td>
-<td width="50%"><img src="docs/img/map_building_panel.jpg" alt="Building detail panel"></td>
+<td width="50%"><img src="reports/studies/figures/study1_portfolio_contagion.png" alt="Landlord portfolio contagion in quiet buildings"></td>
+<td width="50%"><img src="reports/studies/figures/study2_concentration_heat.png" alt="Extreme concentration and 7-winter heat recidivism"></td>
+</tr>
+<tr>
+<td align="center"><sub><b>Study 1:</b> Sister-building distress triples Class C risk in completely quiet buildings</sub></td>
+<td align="center"><sub><b>Study 2:</b> Top 1% consume 50.4% of OMO dollars; 6/6 heat repeaters fail again 92% of the time</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="reports/studies/figures/study3_zombie_classC_seasonality.png" alt="Kaplan-Meier Class C survival and winter bottleneck"></td>
+<td width="50%"><img src="reports/studies/figures/study4_eviction_hazard.png" alt="Eviction-hazard paradox matched comparison and event study"></td>
+</tr>
+<tr>
+<td align="center"><sub><b>Study 3:</b> Kaplan-Meier survival of "24-hour" Class C hazards and winter enforcement drop</sub></td>
+<td align="center"><sub><b>Study 4:</b> Evicting buildings carry 1.95× Class C/unit vs identical-size same-district peers</sub></td>
 </tr>
 </table>
 
-- **Five layers** with a plain-language explanation of each, and a slider across 16 quarterly snapshots.
-- **District averages** when zoomed out, individual buildings when zoomed in.
-- **Click a building** for its estimates, public record counts and history.
-- **Filters and shareable links**: the layer, snapshot and camera live in the URL.
+---
 
-A one-district sample is included, so `make serve` works straight after cloning. The full two-borough layer is built with `make map`. More in [docs/map.md](docs/map.md).
+## The 3D Atlas
 
-## How it works
+A static, zero-build-step civic cartography web app (`app/web/`) built with MapLibre GL and PMTiles. It extrudes **120,705 residential footprints** to their true roof height and integrates three views:
+
+<table>
+<tr>
+<td width="50%"><img src="docs/img/atlas_investigations.png" alt="Investigations broadsheet view"></td>
+<td width="50%"><img src="docs/img/atlas_rankings.png" alt="Sortable 30-district neighborhood rankings"></td>
+</tr>
+<tr>
+<td align="center"><sub><b>Investigations view:</b> All 5 studies with interactive charts and "Inspect on 3D Atlas" jumps</sub></td>
+<td align="center"><sub><b>District Rankings:</b> All 30 named Bronx & Brooklyn neighborhoods, sortable and click-to-fly</sub></td>
+</tr>
+</table>
+
+- **8 map layers** spanning the 5 investigations (*7-Winter Heat Recidivism*, *Taxpayer OMO Spend*, *Open "Zombie" Class C*, *Portfolio Contagion*, *Marshal Evictions*) and 16 out-of-time quarterly model snapshots (*Enforcement Risk*, *Complaint Gap*, *No-Access Rate*).
+- **Instant address, neighborhood, & BBL search** (`/` shortcut) across 101,442 lots via 283 static prefix shards.
+- **Building Report Cards** with real street address, neighborhood, HPD registration status, open Class C median age, OMO dollars, peer-percentile bar, anonymized portfolio context, hazard category breakdown, and 16-quarter sparklines.
+- **5 one-click Guided Investigation filters**, light/dark archival civic theme, and shareable URL hashes.
+
+A one-district sample is committed so `make serve` runs straight after cloning. See [docs/map.md](docs/map.md).
+
+---
+
+## How It Works
 
 ```mermaid
 flowchart LR
-    A["NYC Open Data<br/>12 tables, 13.9M rows"] --> B["Resumable ingest<br/>to Parquet"]
+    A["NYC Open Data<br/>12+ tables, 13.9M rows"] --> B["Resumable ingest<br/>to Parquet"]
     B --> C["DuckDB SQL<br/>as-of features,<br/>forward labels"]
-    C --> D[("Building × quarter<br/>panel")]
-    D --> E["Risk model<br/>walk-forward LightGBM"]
-    D --> F["Condition model<br/>sees no complaints"]
-    F --> G["Complaint gap<br/>and matched validation"]
-    D --> H["Sale event study"]
-    E & G --> I["3D map"]
-    E & G & H --> J["Report and notebooks"]
-    D --> K["LLM layer<br/>sandboxed text-to-SQL"]
+    C --> D[("Building × quarter<br/>panel + marts")]
+    D --> E["Walk-forward LightGBM<br/>+ Condition models"]
+    D --> F["5 Empirical Studies<br/>Portfolio, Heat/OMO,<br/>KM Survival, Evictions, AEP"]
+    E & F --> G["3D Civic Atlas<br/>PMTiles + Report Cards<br/>+ Address Search"]
+    E & F --> H["Reports, Figures<br/>& 7 Notebooks"]
+    D --> I["Sandboxed Text-to-SQL<br/>& Verified Biographies"]
 ```
 
-- **No leakage.** Features only see events dated at or before the snapshot, and feature and label windows never overlap. An independent pandas oracle must match the SQL on every column.
-- **Strictly forward in time.** Walk-forward folds with a 12-month purge gap, a test fold touched once, and bootstrap intervals clustered by building.
-- **The silent test.** A model barred from complaint data predicts condition; the gap to observed complaints defines "silent". Outcomes are compared against the prediction, matched louder buildings and a shuffled placebo.
-- **After a sale.** A staggered difference-in-differences event study with a pre-trend test.
-- **LLM layer.** Text-to-SQL in a read-only sandbox, and building summaries where every sentence must cite a record. RAG failed two pre-declared gates and was dropped.
+- **Strict leakage guards:** Features see only events dated at or before each snapshot; an independent pandas oracle verifies SQL parity on every column, with mutation tests confirming broken SQL fails CI.
+- **Strictly forward in time:** Walk-forward folds with a 12-month purge gap, a single-touch test fold, and building-/portfolio-clustered bootstrap CIs.
+- **Causal & survival rigor:** Callaway & Sant’Anna staggered DiD with pre-trend tests, Coarsened Exact Matching (CEM), right-censoring-adjusted Kaplan-Meier survival curves, and shuffled-portfolio placebos.
 
-**Stack:** Python, DuckDB, Parquet, LightGBM, scikit-learn, statsmodels, SHAP, MapLibre GL, PMTiles, tippecanoe, pytest, GitHub Actions.
+**Stack:** Python 3.12, DuckDB, Parquet, LightGBM, scikit-learn, statsmodels, SHAP, MapLibre GL, PMTiles, tippecanoe, pytest, Ruff, GitHub Actions.
+
+---
 
 ## Quickstart
 
-Needs Python 3.11+ and [uv](https://docs.astral.sh/uv/). No raw data or API key required.
+Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/). No raw data or API keys are needed to run tests or launch the sample 3D Atlas.
 
 ```bash
 git clone https://github.com/moizfakhri/Silent-Buildings.git
 cd Silent-Buildings
-make setup      # create .venv and install
-make test       # 170 tests on synthetic fixtures (10 need the real data and skip without it)
-make serve      # the 3D map at http://127.0.0.1:8777
+make setup      # create .venv and install dependencies
+make test       # 170 tests on synthetic fixtures (data-dependent tests skip cleanly)
+make serve      # launch NYC Housing Monitor at http://127.0.0.1:8777
 ```
-
-To read the results without running anything, see the [full report](docs/REPORT.md) or the executed [notebooks](notebooks/).
 
 <details>
-<summary>Reproduce everything from the raw data</summary>
+<summary>Reproduce everything end-to-end from NYC Open Data</summary>
 
 ```bash
-make ingest     # resumable pull from NYC Open Data (hours)
-make features   # spine, features, labels (about 10 s)
-make model      # all folds and ablations (about 40 min)
+make ingest     # resumable pull from NYC Open Data (add SOCRATA_APP_TOKEN in .env)
+make features   # spine, 82 as-of features, forward labels (~10s)
+make model      # walk-forward LightGBM & logistic folds (~40 min)
 make evaluate   # metrics, calibration, SHAP
-make silent     # condition models, gaps, validation (about 17 min)
-make marts      # DuckDB marts for the LLM layer and the sale study
-make sales      # the sale study (needs make ingest NAMES="dof_sales")
-make map        # full 3D map data (needs tippecanoe)
+make silent     # Phase 4 condition models, complaint gaps & validation (~17 min)
+make marts      # DuckDB analytical marts (~5s)
+make sales      # Phase 5 sale event study (~1 min)
+make studies    # Studies 1–5 (portfolio contagion, heat/OMO, KM survival, evictions, AEP) + figures
+make map        # rebuild 101 MB buildings.pmtiles, 1,205 fact shards & 283 search shards (~2 min; needs tippecanoe)
 ```
-
-A free Socrata app token in `.env` (copy `.env.example`) raises rate limits. See the [Makefile](Makefile) for every target.
 
 </details>
 
 <details>
 <summary>Repository layout</summary>
 
-```
-src/nycdistress/   core library
-pipelines/         ingest, SQL, per-phase train, evaluate and report scripts
-app/web/           the 3D map and its one-district sample
-tests/             170 tests, including the leakage oracle
-notebooks/         seven executed notebooks
-docs/              report, methodology log, one document per phase
-reports/           aggregate tables and figures
+```text
+src/nycdistress/     core library (splits, modeling, metrics, DiD, silent validation, LLM sandbox)
+pipelines/           ingest, DuckDB SQL, phase scripts, and pipelines/studies/ (Studies 1–5)
+app/web/             static 3D Civic Atlas, Building Report Cards, Investigations & Rankings
+tests/               170 automated tests including the pandas leakage oracle and schema/PII checks
+notebooks/           seven executed walkthrough notebooks
+docs/                STUDIES.md, REPORT.md, METHODOLOGY_LOG.md, map.md, and per-phase docs
+reports/             reproducible CSV/JSON tables and publication figures
 ```
 
 </details>
 
-## Limitations
+---
 
-- **The model predicts city actions, not physical condition.** A high score mostly means the city is already engaged.
-- **The validating outcomes are partly downstream of complaints**, so silent buildings would show fewer of them regardless.
-- **The sale study is observational** and shows some pre-sale drift.
-- **No demographic data were used.** "Silent" does not mean "neglected".
-- **Not for operational use.** Scores differ by borough and district; do not use them to prioritise inspections without a fairness review.
+## Privacy, Ethics & License
 
-Choices made after seeing data are listed in [docs/METHODOLOGY_LOG.md](docs/METHODOLOGY_LOG.md).
-
-## Data, privacy and license
-
-No raw data is redistributed, and no owner, tenant or contact names appear anywhere. The map shows model estimates for research, which are wrong for many individual buildings.
-
-[MIT](LICENSE) licensed; vendored libraries are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Data from NYC Open Data (HPD, DOB, DOF, DCP, 311). This project is independent and not affiliated with the City of New York.
+- **Zero personal names:** No owner, landlord, managing agent, respondent, or tenant names appear anywhere in code, outputs, tiles, or shards. Portfolio links use anonymized hashes of normalized HPD registration business addresses.
+- **Not a legal verdict or operational inspection tool:** Model probabilities and aggregate patterns are for independent research and are wrong for many individual buildings. No demographic data were used.
+- **License:** [MIT](LICENSE); vendored libraries are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Data sourced from NYC Open Data (HPD, DOB, DOF, DCP, 311). Independent project, not affiliated with the City of New York.
