@@ -1,84 +1,216 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Complaint gap map</title>
-<meta name="description" content="Research map of model estimates for Bronx and Brooklyn residential buildings: predicted risk, predicted condition and the gap between predicted condition and complaints.">
+<meta name="color-scheme" content="light dark">
+<script>
+try {
+  var s = localStorage.getItem("color-scheme");
+  if (s === "light" || s === "dark") document.querySelector('meta[name="color-scheme"]').content = s;
+} catch (e) {}
+</script>
+<title>NYC Housing Monitor — Bronx &amp; Brooklyn 3D Atlas &amp; Investigations</title>
+<meta name="description" content="Interactive 3D atlas and empirical investigations across 101,442 Bronx and Brooklyn residential buildings and 13.9 million NYC Open Data housing enforcement records.">
 <link rel="stylesheet" href="vendor/maplibre-gl.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="map" aria-label="3D map of Bronx and Brooklyn residential buildings"></div>
 
-<aside id="controls" aria-label="Map controls">
-  <header>
-    <h1>Complaint gap map</h1>
-    <p class="sub">Bronx and Brooklyn, residential buildings with 3+ units. Model estimates for research.</p>
-  </header>
-  <p id="sample-note" class="banner" hidden></p>
-
-  <section>
-    <label for="layer">Colour buildings by</label>
-    <div class="row">
-      <select id="layer"></select>
-      <button id="help-btn" class="icon" aria-label="What does this layer mean?" aria-expanded="false" aria-controls="help">i</button>
+<header class="masthead" role="banner">
+  <div class="brand">
+    <span class="roundel roundel-bx" aria-hidden="true">BX</span>
+    <span class="roundel roundel-bk" aria-hidden="true">BK</span>
+    <div class="brand-text">
+      <h1>NYC Housing Monitor</h1>
+      <span class="brand-sub">101,442 buildings · 13.9M public records</span>
     </div>
-    <div id="help" class="help" hidden></div>
-    <div id="legend" aria-live="polite"></div>
-  </section>
-
-  <section>
-    <label for="slider">Snapshot: <strong id="snap-label"></strong></label>
-    <div class="row">
-      <button id="play" class="icon" aria-label="Play through snapshots">&#9654;</button>
-      <input id="slider" type="range" min="0" max="15" step="1" value="15" aria-label="Snapshot date">
-    </div>
-    <p class="note">Each snapshot uses only information known on that date; predictions come from models trained on earlier data (out of time).</p>
-  </section>
-
-  <section>
-    <label for="borough">Filters</label>
-    <div class="row">
-      <select id="borough" aria-label="Borough"><option value="">Both boroughs</option><option value="BK">Brooklyn</option><option value="BX">Bronx</option></select>
-      <select id="district" aria-label="Community district"><option value="">All districts</option></select>
-    </div>
-    <label class="check"><input type="checkbox" id="only-gap"> Only the top 10% of the complaint gap in each borough</label>
-    <label class="check"><input type="checkbox" id="only-access"> Only access-blocked buildings</label>
-  </section>
-
-  <section class="row buttons">
-    <button id="theme">Dark mode</button>
-    <button id="tilt">Reset view</button>
-    <button id="about">About &amp; limits</button>
-  </section>
-</aside>
-
-<aside id="panel" hidden aria-label="Building details">
-  <button id="panel-close" class="icon" aria-label="Close">&times;</button>
-  <div id="panel-body"></div>
-</aside>
-
-<div id="hover" hidden></div>
-<footer id="foot">Model estimates for research. Not findings about any owner or tenant. Per-building numbers are public record counts and model outputs; no owner names are used.
-  <a href="#" id="foot-about">Details</a></footer>
-
-<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
-  <div class="card">
-    <h2 id="modal-title">Read this first</h2>
-    <p><strong>This map shows model estimates for research, not findings about any owner or tenant.</strong>
-       Colours are predictions made from public data, and they are wrong for many individual buildings.</p>
-    <ul>
-      <li><strong>Predicted risk</strong>: how likely the building is to see a vacate order, emergency repair charge, AEP selection or HPD litigation in the next 12 months.</li>
-      <li><strong>Predicted condition</strong>: the same idea using only age, size and earlier city actions, with <em>no</em> complaint information.</li>
-      <li><strong>Complaint gap</strong>: predicted condition compared with the building's complaint record. A large gap does <em>not</em> mean a building is hiding danger. In the validation behind this map, buildings that are quieter than predicted had slightly <em>fewer</em> later enforcement events than predicted, not more.</li>
-      <li><strong>No-access share</strong>: how many closed complaints ended with the inspector unable to gain access. It is real and sizeable, but buildings with a high share did not show extra later risk.</li>
-    </ul>
-    <p>Most buildings (about 77%) have no HPD complaint in a year, so silence is ordinary. Do not use this map to judge a building, a landlord or a neighbourhood. Method and limits:
-       <code>docs/silent_distress_phase4.md</code> and <code>docs/modeling_phase3.md</code>.</p>
-    <button id="modal-ok">I understand</button>
   </div>
-</div>
+
+  <div class="search-wrap" role="search">
+    <label for="search-input" class="visually-hidden">Search street address, neighborhood, or 10-digit BBL</label>
+    <input id="search-input" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search address, neighborhood, or BBL…" aria-autocomplete="list" aria-expanded="false" aria-controls="search-results">
+    <kbd class="search-hint" aria-hidden="true">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+  </div>
+
+  <div class="nav-tabs" role="tablist" aria-label="Primary views">
+    <button type="button" role="tab" id="tab-map" aria-selected="true" tabindex="0" data-view="map">3D Atlas</button>
+    <button type="button" role="tab" id="tab-studies" aria-selected="false" tabindex="-1" data-view="studies">Investigations</button>
+    <button type="button" role="tab" id="tab-districts" aria-selected="false" tabindex="-1" data-view="districts">District Rankings</button>
+  </div>
+
+  <div class="masthead-actions">
+    <button type="button" id="theme-btn" class="ghost-btn" aria-label="Switch color theme" title="Toggle light/dark theme">
+      <span class="theme-icon-light" aria-hidden="true">◐</span>
+      <span class="theme-label">Theme</span>
+    </button>
+    <button type="button" id="about-btn" class="ghost-btn">Method &amp; Limits</button>
+  </div>
+</header>
+
+<main id="workspace">
+  <!-- ====================================================================== VIEW 1: 3D ATLAS -->
+  <section id="view-map" class="view-pane" role="tabpanel" aria-labelledby="tab-map">
+    <div id="map" aria-label="3D interactive map of Bronx and Brooklyn residential buildings"></div>
+
+    <!-- Left Atlas Control Rail -->
+    <aside id="controls" class="rail" aria-label="Map controls">
+      <div id="sample-note" class="sample-banner" hidden></div>
+
+      <div class="ctrl-block">
+        <div class="ctrl-head">
+          <label for="layer">Map Layer</label>
+          <button type="button" id="help-btn" class="pill-btn" aria-expanded="false" aria-controls="layer-help">Notes</button>
+        </div>
+        <select id="layer"></select>
+        <div id="layer-help" class="help-box" hidden></div>
+        <div id="legend" class="legend-box" aria-live="polite"></div>
+      </div>
+
+      <div class="ctrl-block">
+        <div class="ctrl-head">
+          <span class="ctrl-label">Guided Investigations</span>
+          <button type="button" id="clear-filters" class="link-btn" hidden>Clear filters</button>
+        </div>
+        <div class="preset-grid" id="presets">
+          <button type="button" class="preset-chip" data-preset="heat7" title="Buildings failing heat in 6 or 7 of the last 7 winters">
+            <span class="dot dot-red"></span>7-Winter Heat Offenders
+          </button>
+          <button type="button" class="preset-chip" data-preset="omo50" title="Buildings with $50,000+ in taxpayer emergency repairs">
+            <span class="dot dot-amber"></span>Top OMO Spend ($50k+)
+          </button>
+          <button type="button" class="preset-chip" data-preset="contagion" title="Zero complaints & zero violations, but landlord's sister buildings average 0.15+ Class C/unit">
+            <span class="dot dot-slate"></span>Quiet + Distressed Portfolio
+          </button>
+          <button type="button" class="preset-chip" data-preset="evhaz" title="Executed evictions alongside 5+ unresolved Class C hazards">
+            <span class="dot dot-crimson"></span>Evicting + 5+ Open Class C
+          </button>
+          <button type="button" class="preset-chip" data-preset="access" title="At least half of closed complaints ended with no inspector access">
+            <span class="dot dot-teal"></span>Access-Blocked Buildings
+          </button>
+        </div>
+      </div>
+
+      <div class="ctrl-block">
+        <span class="ctrl-label">Area &amp; Display</span>
+        <div class="row-2">
+          <select id="borough" aria-label="Borough filter">
+            <option value="">Bronx + Brooklyn</option>
+            <option value="BX">Bronx</option>
+            <option value="BK">Brooklyn</option>
+          </select>
+          <select id="district" aria-label="Neighborhood district filter">
+            <option value="">All 30 districts</option>
+          </select>
+        </div>
+        <div class="row-2 mt-6">
+          <button type="button" id="basemap-btn" class="ctrl-btn" aria-pressed="true">Street map: On</button>
+          <button type="button" id="reset-view" class="ctrl-btn">Reset camera</button>
+        </div>
+        <div id="filter-status" class="filter-status" aria-live="polite"></div>
+      </div>
+    </aside>
+
+    <!-- Bottom-center Quarterly Scrubber (active on quarterly time-series layers) -->
+    <div id="timebar" class="timebar" hidden aria-label="Quarterly snapshot timeline">
+      <button type="button" id="play" class="play-btn" aria-label="Play quarterly snapshots">&#9654;</button>
+      <div class="timebar-track">
+        <div class="timebar-meta">
+          <span>Out-of-time snapshot: <strong id="snap-label"></strong></span>
+          <span class="muted">Use ← / → keys to step quarters</span>
+        </div>
+        <input id="slider" type="range" min="0" max="15" step="1" value="15" aria-label="Quarterly snapshot">
+      </div>
+    </div>
+
+    <!-- Right Slide-Over: Building Report Card -->
+    <aside id="panel" class="report-card" hidden aria-label="Building Report Card">
+      <button type="button" id="panel-close" class="close-btn" aria-label="Close building report card">&times;</button>
+      <div id="panel-body"></div>
+    </aside>
+
+    <div id="hover" class="hover-tip" hidden></div>
+
+    <footer class="map-foot">
+      <span>Public NYC Open Data (HPD, DOB, DOF, PLUTO, 311) · Independent research · Zero personal owner or tenant names.</span>
+      <span id="zoom-hint" class="zoom-pill">District view — zoom in for 3D buildings</span>
+    </footer>
+  </section>
+
+  <!-- ====================================================================== VIEW 2: INVESTIGATIONS -->
+  <section id="view-studies" class="view-pane scroll-pane" role="tabpanel" aria-labelledby="tab-studies" hidden>
+    <div class="broadsheet">
+      <header class="sheet-hero">
+        <p class="kicker">EMPIRICAL AUDIT · BRONX &amp; BROOKLYN (2018–2025)</p>
+        <h2>NYC Enforces Housing One Building at a Time — Missing the Networks &amp; Bottlenecks Underneath</h2>
+        <p class="deck">Across 101,442 multi-family buildings and 13.9 million public records, we tested five structural questions about landlord portfolios, chronic concentration, unresolved immediately hazardous violations, marshal evictions, and city interventions. Every estimate below is out-of-time or matched with cluster-robust confidence intervals.</p>
+        <div id="hero-kpis" class="kpi-strip"></div>
+      </header>
+
+      <div id="studies-container" class="studies-stack"></div>
+    </div>
+  </section>
+
+  <!-- ====================================================================== VIEW 3: DISTRICT RANKINGS -->
+  <section id="view-districts" class="view-pane scroll-pane" role="tabpanel" aria-labelledby="tab-districts" hidden>
+    <div class="broadsheet">
+      <header class="sheet-hero sheet-hero-compact">
+        <p class="kicker">NEIGHBORHOOD LEDGER · 30 COMMUNITY DISTRICTS</p>
+        <h2>Where Taxpayer Repair Dollars, Chronic Heat Failures &amp; Evictions Concentrate</h2>
+        <p class="deck">Click any column header to sort, or click a neighborhood row to fly directly to it on the 3D Atlas.</p>
+        <div class="rankings-toolbar">
+          <div class="seg-group" role="group" aria-label="Filter districts by borough">
+            <button type="button" class="seg-btn active" data-rboro="">All (30)</button>
+            <button type="button" class="seg-btn" data-rboro="BX">Bronx (12)</button>
+            <button type="button" class="seg-btn" data-rboro="BK">Brooklyn (18)</button>
+          </div>
+          <span class="muted" id="rankings-meta">Sorted by taxpayer OMO spend</span>
+        </div>
+      </header>
+
+      <div tabindex="0" role="region" aria-labelledby="rankings-caption" class="table-wrapper">
+        <table id="rankings-table" class="data-table">
+          <caption id="rankings-caption" class="visually-hidden">Bronx and Brooklyn Community District housing distress rankings</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-sort="nm">Neighborhood</th>
+              <th scope="col" data-sort="n" class="num">Bldgs</th>
+              <th scope="col" data-sort="omo_m" class="num" aria-sort="descending">OMO ($M)</th>
+              <th scope="col" data-sort="omo_pu" class="num">OMO $/Unit</th>
+              <th scope="col" data-sort="heat7_n" class="num">6–7W Heat</th>
+              <th scope="col" data-sort="open_c_pu" class="num">Open C/Unit</th>
+              <th scope="col" data-sort="ev_p1k" class="num">Evict/1k</th>
+              <th scope="col" data-sort="eh_n" class="num">Evict+5C</th>
+              <th scope="col" data-sort="qp_n" class="num">Quiet+Port.</th>
+            </tr>
+          </thead>
+          <tbody id="rankings-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- On-demand Method & Limits Dialog (never auto-opens on first visit) -->
+<dialog id="about-dialog" closedby="any" aria-labelledby="about-title">
+  <div class="dialog-head">
+    <h2 id="about-title">Methodology, Data Scope &amp; Honest Limits</h2>
+    <form method="dialog"><button type="submit" class="close-btn" aria-label="Close dialog">&times;</button></form>
+  </div>
+  <div class="dialog-body">
+    <p><strong>Independent civic research — not a legal finding about any owner or tenant.</strong> Per-building counts come directly from NYC Open Data (HPD Violations, HPD Complaints, 311, OMO Emergency Repair Charges, Litigations, Vacate Orders, AEP, Evictions, DOB Violations, DOF Sales, PLUTO, Building Footprints) covering 101,442 Bronx and Brooklyn residential lots with 3+ units (2018–2025).</p>
+    <ul>
+      <li><strong>Privacy by construction:</strong> Zero owner, landlord, managing agent, respondent, or tenant names are stored or displayed anywhere. Portfolio links use anonymized hashes of normalized HPD business addresses.</li>
+      <li><strong>Original "Silent Distress" result reported honestly:</strong> On its own, a building’s lack of complaints does <em>not</em> predict hidden extra danger (observed/predicted 0.84; matched RR 0.65). However, <em>portfolio context</em> changes the picture: among completely quiet buildings (0 complaints &amp; 0 violations), sister-building Class C distress strongly predicts next-year Class C hazards (OR 1.35, p &lt; 10<sup>-34</sup>) and serious events (OR 1.31).</li>
+      <li><strong>Caveats:</strong> HPD registration contacts reflect the current snapshot (mitigated via a never-sold stability check); model probabilities are wrong for many individual buildings; enforcement records reflect reporting and inspection capacity as well as physical condition.</li>
+    </ul>
+    <form method="dialog" class="dialog-foot">
+      <button type="submit" class="primary-btn" autofocus>Back to Atlas</button>
+    </form>
+  </div>
+</dialog>
 
 <script src="vendor/maplibre-gl.js"></script>
 <script src="vendor/pmtiles.js"></script>

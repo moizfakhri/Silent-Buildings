@@ -34,7 +34,11 @@ def test_committed_sample_has_the_documented_format_and_no_owner_fields():
     g = json.loads((sample / "buildings.geojson").read_text())
     n = len(g["snapshots"])
     assert n == 16 and g["features"]
-    allowed = {"b", "n", "bo", "cd", "u", "yb", "h", "r", "c", "g", "a", "m", "sf", "ab"}
+    allowed = {
+        "b", "n", "bo", "cd", "u", "yb", "h", "ad",
+        "r", "c", "g", "a", "m", "sf", "ab",
+        "hw", "oc", "ocn", "om", "omk", "pt", "ev", "evn", "qp", "eh",
+    }
     for f in g["features"][:500]:
         p = f["properties"]
         assert set(p) == allowed                                                    # nothing else (no owner or name fields) in the tiles
@@ -44,7 +48,7 @@ def test_committed_sample_has_the_documented_format_and_no_owner_fields():
         assert p["h"] >= 0.9 and len(p["b"]) == 10
     facts = json.loads((sample / "facts.json").read_text())
     rec = next(iter(facts.values()))
-    assert set(rec) >= {"risk", "cond", "gap", "nacc", "silent", "blocked", "open_viol", "viol12", "complaints12"}
+    assert set(rec) >= {"risk", "cond", "gap", "nacc", "silent", "blocked", "open_viol", "viol12", "complaints12", "omo_usd", "hw_w", "open_c", "haz"}
     banned = ("owner", "name", "landlord", "contact", "corporation", "tenant")
     assert not any(b in k.lower() for k in rec for b in banned)
     assert all(len(rec[k]) == n for k in ("risk", "cond", "gap", "nacc", "complaints12"))
@@ -57,4 +61,4 @@ def test_districts_file_has_30_districts_with_aggregates_only():
     d = json.loads(p.read_text())
     assert len(d["features"]) == 30
     props = d["features"][0]["properties"]
-    assert set(props) == {"cd", "bo", "n", "v"} and set(props["v"]) == {"risk", "cond", "gap", "nacc", "comp", "silent"}
+    assert set(props) == {"cd", "bo", "nm", "n", "cx", "cy", "v", "s"} and set(props["v"]) == {"risk", "cond", "gap", "nacc", "comp", "silent"}
